@@ -14,7 +14,8 @@ class CDR {
         myTotal_energy,
         myTotalEnergyCost,
         myTotal_parking_time,
-        myTotal_parking_cost, 
+        myTotal_parking_cost,
+        myRemark, 
         myLast_updated
     ) {
         this.country_code = myCountry_code; // CiString(2), ISO-3166 alpha-2 country code of the CPO that 'owns' this CDR.
@@ -41,7 +42,7 @@ class CDR {
         this.total_parking_time = myTotal_parking_time; // number, ?, Total duration of the charging session where the EV was not charging (no energy was transferred between EVSE and EV), in hours.
         this.total_parking_cost = myTotal_parking_cost; // Price, ?, Total sum of all the cost related to parking of this transaction, including fixed price components, in the specified currency.
         this.total_reservation_cost = ""; // Price, ?, Total sum of all the cost related to a reservation of a Charge Point, including fixed price components, in the specified currency.
-        this.remark = ""; // string(255), ?, Optional remark, can be used to provide additional human readable information to the CDR, for example: reason why a transaction was stopped.
+        this.remark = myRemark; // string(255), ?, Optional remark, can be used to provide additional human readable information to the CDR, for example: reason why a transaction was stopped.
         this.invoice_reference_id = ""; // CiString(39), ?, This field can be used to reference an invoice, that will later be send for this CDR. Making it easier to link a CDR to a given invoice. Maybe even group CDRs that will be on the same invoice.
         this.credit = false; // boolean, ?, When set to true, this is a Credit CDR, and the field credit_reference_id needs to be set as well.
         this.credit_reference_id = ""; // CiString(39), ?, Is required to be set for a Credit CDR. This SHALL contain the id of the CDR for which this is a Credit CDR.

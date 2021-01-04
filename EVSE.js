@@ -160,12 +160,13 @@ class EVSE {
             this.chargingSession.cost.energy,
             this.chargingSession.parkingTime,
             this.chargingSession.cost.parking,
+            this.evseID,
             simulationClock.getCurrentTime()
         );
-        myMSP.addCDR(newCDR);
-        // TBC -> remove the Session !!!
 
         // send CDR to eMSP
+        myMSP.addCDR(newCDR);
+        this.chargingSession = null;
         this.chargingEV = null;
         this.chargeQueue.shift(); // remove the first element
         if (this.chargeQueue.length == 0) {
