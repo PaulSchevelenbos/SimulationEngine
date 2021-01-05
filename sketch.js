@@ -16,8 +16,8 @@ const colorLocationField = [252,159,159, 150];
 
 // Simulation parameters
 // let nMSP = 1; // number of MSP's; HYPERLEDGER IMPLEMENTATION EXPECTS ONE !
-let evCount = 100; // number of EV's
-let nLocations = 30; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let evCount = 10; // number of EV's
+let nLocations = 3; // number of locations with EVSEs, topped to myLocations.maxLocations()
 let evseDistribution = [10, 5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
