@@ -1,7 +1,8 @@
 class MSP {
-    constructor(myID, myName) {
-        this.ID = myID;
-        this.name = myName || "MSP" + myID.toString();
+    constructor(myName, myFee) {
+        this.ID = 0; // TBC change to Ledger key
+        this.UID = createRandomUID(36); // Case insensitive String(36)
+        this.name = myName;
         this.chargePoints = []; // array of charge points onboarded with MSP
         this.locations = [];
         this.totalKWh = 0;
@@ -11,6 +12,7 @@ class MSP {
         this.totalCost = 0;
         this.nFinishedSessions = 0;
         this.CDRqueue = [];
+        this.fee = myFee ; // in € per transaction (CDR)
     }
 
     addEVSE(myEVSE) {

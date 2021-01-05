@@ -12,7 +12,7 @@ const colorHeading = [30, 144, 255, 255]; // RGB dodger blue
 const colorEmpty = [255, 153, 51, 255]; // RGB dodger blue
 const oneMinute = 60000; // 60.000 milliseconds = 60 seconds = 1 minute 
 const hexValues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
-const colorLocationField = [252,159,159, 150];
+const colorLocationField = [252, 159, 159, 150];
 
 // Simulation parameters
 // let nMSP = 1; // number of MSP's; HYPERLEDGER IMPLEMENTATION EXPECTS ONE !
@@ -49,6 +49,8 @@ let highBattery = 0.80; // EV charges until this battery percentage
 const myFleet = []; // array of EV's
 const myCPOs = []; // CPO's will onboard with our MSP
 let myMSP; // Simulaton is set up for a single MSP
+let myFI; // Simulation assumes a financial institution accountable for tx's
+
 
 
 // preparation before draw
@@ -70,13 +72,16 @@ function setup() {
 	myResolution = 5 * objectSize;
 	myLocations = new Locations(myResolution);
 
-	// create MSP, Locations, CPO's and chargepoints
-	myMSP = new MSP(0, "TRES");
+	// create FI, MSP, Locations, CPO's and chargepoints
+	myFI = new FI("KBC", 0.01); // specify name and fee
+	myMSP = new MSP("TRES", 0.01); // specify name and fee
 
 	nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
 	for (let i = 0; i < nLocations; i++) {
 		let newCPO = new CPO(i);
 		myCPOs.push(newCPO);
+		// TBC: MSP.addCPO() => add CPO to Ledger + array at MSP
+
 		// create new location
 		let newLocation = myLocations.addLocation(newCPO.getID());
 		// create chargepoints (EVSEs) in this new location (number according to distribution)
@@ -92,7 +97,14 @@ function setup() {
 
 	// create Electronic Vehicles
 	for (let i = 0; i < evCount; i++) {
-		myFleet.push(new EV(i));
+		let newEV = new EV(i);
+		myFleet.push(newEV);
+		// addEVDriver to blockchain, with:
+		// newEV.cdrToken.uid
+		// newEV.cdrToken.type
+		// newEV.cdrToken.contract_id
+		// newEV.ID
+		// newEV.UID
 	}
 };
 
