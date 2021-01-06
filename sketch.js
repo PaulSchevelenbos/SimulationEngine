@@ -14,6 +14,9 @@ const oneMinute = 60000; // 60.000 milliseconds = 60 seconds = 1 minute
 const hexValues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
 const colorLocationField = [252, 159, 159, 150];
 
+// hyperledger fabric URL's (docker containers on local machine)
+
+
 // Simulation parameters
 // let nMSP = 1; // number of MSP's; HYPERLEDGER IMPLEMENTATION EXPECTS ONE !
 let evCount = 10; // number of EV's
@@ -74,6 +77,7 @@ function setup() {
 
 	// create FI, MSP, Locations, CPO's and chargepoints
 	myFI = new FI("KBC", 0.01); // specify name and fee
+	myFI.createOnLedger();
 	myMSP = new MSP("TRES", 0.01); // specify name and fee
 
 	nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
