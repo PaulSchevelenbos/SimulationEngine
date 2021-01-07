@@ -24,6 +24,7 @@ class FI {
         // const responseData = await response.json();
         */
 
+        /*
         // TEST2: curl --request POST --data '{"userId":"USER_001","password":"0x023","companyId":"COMP_001","email":"james.bond@mi6.org","firstname":"James","lastname":"Bond"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createUser;
         const createUserURL = 'http://127.0.0.1:8080/api/createUser';
         const data = { "userId": "USER_013", "password": "0x023", "companyId": "COMP_001", "email": "james.bond@mi6.org", "firstname": "James", "lastname": "Bond" };
@@ -41,6 +42,7 @@ class FI {
         console.log("body parameter: ", JSON.stringify(data));
         console.log("response to createOnLedger -> fetch(): ", response);
         // const responseData = await response.json();
+        */
 
     }
 }
