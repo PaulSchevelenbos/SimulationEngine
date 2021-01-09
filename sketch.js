@@ -18,9 +18,8 @@ const colorLocationField = [252, 159, 159, 150];
 
 
 // Simulation parameters
-// let nMSP = 1; // number of MSP's; HYPERLEDGER IMPLEMENTATION EXPECTS ONE !
-let evCount = 10; // number of EV's
-let nLocations = 3; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let evCount = 100; // number of EV's
+let nLocations = 30; // number of locations with EVSEs, topped to myLocations.maxLocations()
 let evseDistribution = [10, 5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
@@ -44,6 +43,7 @@ function createRandomUID(idLength) {
 	return outputString;
 }
 
+
 // Ecosystem parameters
 let avgDailyCommuteKm = 31.84; // source: https://www.duurzame-mobiliteit.be/nieuws/ovg-55-aantal-verplaatsingen-en-kilometers-blijven-gelijk
 let lowBattery = 0.30; // EV requires charging below this remaining battery percentage
@@ -57,7 +57,7 @@ let myFI; // Simulation assumes a financial institution accountable for tx's
 
 
 // preparation before draw
-function setup() {
+async function setup() {
 
 	// createCanvas(windowWidth, windowHeight)
 	cityMap = loadImage('images/Medium-MapLeuven.jpg'); // TBC zoomed-out image when many EV's
@@ -76,14 +76,17 @@ function setup() {
 	myLocations = new Locations(myResolution);
 
 	// create FI, MSP, Locations, CPO's and chargepoints
+	myMSP = new MSP("TRES", 0.01); // specify name and fee
+	const mspCreatedOnLedger = await myMSP.createOnLedger();
 	myFI = new FI("KBC", 0.01); // specify name and fee
 	myFI.createOnLedger();
-	myMSP = new MSP("TRES", 0.01); // specify name and fee
+
 
 	nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
 	for (let i = 0; i < nLocations; i++) {
 		let newCPO = new CPO(i);
 		myCPOs.push(newCPO);
+		newCPO.createOnLedger();
 		// TBC: MSP.addCPO() => add CPO to Ledger + array at MSP
 
 		// create new location
@@ -103,12 +106,7 @@ function setup() {
 	for (let i = 0; i < evCount; i++) {
 		let newEV = new EV(i);
 		myFleet.push(newEV);
-		// addEVDriver to blockchain, with:
-		// newEV.cdrToken.uid
-		// newEV.cdrToken.type
-		// newEV.cdrToken.contract_id
-		// newEV.ID
-		// newEV.UID
+		newEV.createOnLedger();
 	}
 };
 

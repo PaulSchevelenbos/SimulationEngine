@@ -247,4 +247,27 @@ class EV {
             pop();
         }
     }
+
+    async createOnLedger() {
+
+        let my_contract_id = this.cdrToken.contract_id;
+        let my_uid = this.cdrToken.uid;
+        let my_role = "EVDR";
+        let my_wallet_balance = "0.00";
+        let my_fee = "0.00";
+
+        // TEST: curl --request POST --data '{"userId":"USER_001","password":"0x023","companyId":"COMP_001","email":"james.bond@mi6.org","firstname":"James","lastname":"Bond"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createUser;
+        const createUserURL = 'http://127.0.0.1:8080/api/createUser';
+        const data = { "userId": my_contract_id, "password": my_uid, "companyId": my_role, "email": my_wallet_balance, "firstname": my_fee, "lastname": "TEST" };
+        const response2 = await fetch(createUserURL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        console.log("body parameter: ", JSON.stringify(data));
+        console.log("response to createOnLedger -> fetch(): ", response2);
+
+    }
+
 }

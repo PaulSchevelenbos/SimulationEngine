@@ -1,7 +1,7 @@
 class MSP {
     constructor(myName, myFee) {
-        this.ID = 0; // TBC change to Ledger key
         this.UID = createRandomUID(36); // Case insensitive String(36)
+        this.ID = this.UID.slice(-8); // last 8 characters of UID
         this.name = myName;
         this.chargePoints = []; // array of charge points onboarded with MSP
         this.locations = [];
@@ -12,7 +12,7 @@ class MSP {
         this.totalCost = 0;
         this.nFinishedSessions = 0;
         this.CDRqueue = [];
-        this.fee = myFee ; // in € per transaction (CDR)
+        this.fee = myFee; // in € per transaction (CDR)
     }
 
     addEVSE(myEVSE) {
@@ -83,5 +83,41 @@ class MSP {
         this.CDRqueue.push(myCDR);
     }
 
+    async createOnLedger() {
+
+        let my_contract_id = this.ID;
+        let my_uid = this.UID;
+        let my_role = "MSP";
+        let my_wallet_balance = "0.00";
+        let my_fee = this.fee;
+
+
+        //  cf: curl --request POST http://127.0.0.1:8080/api/enrollAdminOrg1
+        const enrollAdminORG1URL = 'http://127.0.0.1:8080/api/enrollAdminOrg1';
+        const response1 = await fetch(enrollAdminORG1URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        console.log("response to createOnLedger -> fetch(): ", response1);
+        // const responseData = await response.json();
+
+
+        // TEST: curl --request POST --data '{"userId":"USER_001","password":"0x023","companyId":"COMP_001","email":"james.bond@mi6.org","firstname":"James","lastname":"Bond"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createUser;
+        const createUserURL = 'http://127.0.0.1:8080/api/createUser';
+        const data = { "userId": my_contract_id, "password": my_uid, "companyId": my_role, "email": my_wallet_balance, "firstname": my_fee, "lastname": "TEST" };
+        const response2 = await fetch(createUserURL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        console.log("body parameter: ", JSON.stringify(data));
+        console.log("response to createOnLedger -> fetch(): ", response2);
+        // const responseData = await response.json();
+
+        return true;
+
+    }
 
 }
