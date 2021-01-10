@@ -14,10 +14,10 @@ class FI {
         let my_wallet_balance = "0.00";
         let my_fee = this.fee;
 
-        // TEST: curl --request POST --data '{"userId":"USER_001","password":"0x023","companyId":"COMP_001","email":"james.bond@mi6.org","firstname":"James","lastname":"Bond"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createUser;
-        const createUserURL = 'http://127.0.0.1:8080/api/createUser';
-        const data = { "userId": my_contract_id, "password": my_uid, "companyId": my_role, "email": my_wallet_balance, "firstname": my_fee, "lastname": "TEST" };
-        const response2 = await fetch(createUserURL, {
+        //  curl --request POST --data '{"contractId":"33B37086","uId":"CAD34E62D4505529A31659661BC133B37086","rol":"MSP", "walletBalance":"0","fees":"0.0"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createStakeholder
+        const createStakeholderURL = 'http://127.0.0.1:8080/api/createStakeholder';
+        const data = { "contractId": my_contract_id, "uId": my_uid, "rol": my_role, "walletBalance": my_wallet_balance, "fees": my_fee};
+        const response2 = await fetch(createStakeholderURL, {
             method: 'POST',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json' },
