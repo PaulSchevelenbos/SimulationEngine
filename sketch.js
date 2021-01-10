@@ -1,7 +1,8 @@
 // Pro memorie:
 // to start server in index.html subdir: $ http-server
-// in browser surf to URL: http://localhost:8080/
+// in browser surf to URL: http://localhost:8081/ (if node is already started on port 8080)
 // to beautify JS code in Visual Studio Code: CTRL+SHIFT+i 
+
 
 // Global constants
 const colorFree = [0, 200, 0, 200]; // RGB green
@@ -14,12 +15,10 @@ const oneMinute = 60000; // 60.000 milliseconds = 60 seconds = 1 minute
 const hexValues = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
 const colorLocationField = [252, 159, 159, 150];
 
-// hyperledger fabric URL's (docker containers on local machine)
-
 
 // Simulation parameters
-let evCount = 100; // number of EV's
-let nLocations = 30; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let evCount = 20; // number of EV's
+let nLocations = 5; // number of locations with EVSEs, topped to myLocations.maxLocations()
 let evseDistribution = [10, 5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
@@ -32,6 +31,7 @@ let resetButton; // resets the currentTime to startTime
 let simulationRunning = false; // function draw only executes when 'true'
 let myLocations; // territory split in locations like a chessfield
 let myResolution; // pixel length of one matrix square dividing the map in locations
+
 
 // Utility functions
 function createRandomUID(idLength) {
@@ -55,7 +55,6 @@ let myMSP; // Simulaton is set up for a single MSP
 let myFI; // Simulation assumes a financial institution accountable for tx's
 
 
-
 // preparation before draw
 async function setup() {
 
@@ -75,20 +74,19 @@ async function setup() {
 	myResolution = 5 * objectSize;
 	myLocations = new Locations(myResolution);
 
-	// create FI, MSP, Locations, CPO's and chargepoints
+	// create stakeholders, Locations and chargepoints
 	myMSP = new MSP("TRES", 0.01); // specify name and fee
 	const mspCreatedOnLedger = await myMSP.createOnLedger();
 	myFI = new FI("KBC", 0.01); // specify name and fee
 	myFI.createOnLedger();
-
+	myTech = new TechAccount();
+	myTech.createOnLedger();
 
 	nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
 	for (let i = 0; i < nLocations; i++) {
 		let newCPO = new CPO(i);
 		myCPOs.push(newCPO);
 		newCPO.createOnLedger();
-		// TBC: MSP.addCPO() => add CPO to Ledger + array at MSP
-
 		// create new location
 		let newLocation = myLocations.addLocation(newCPO.getID());
 		// create chargepoints (EVSEs) in this new location (number according to distribution)
