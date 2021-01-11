@@ -249,7 +249,7 @@ class EV {
     }
 
     async createOnLedger() {
-
+        // create the EVDriver of this EV as a stakeholder on the ledger
         let my_contract_id = this.cdrToken.contract_id;
         let my_uid = this.cdrToken.uid;
         let my_role = "EVDR";
@@ -267,6 +267,26 @@ class EV {
         });
         console.log("body parameter: ", JSON.stringify(data));
         console.log("response to createOnLedger -> fetch(): ", response2);
+
+    }
+
+    async fund(myAmount) {
+        // transfer an amount from the technical account to the EVDrivers wallet to pay EV charging
+        let fromId = myTech.ID;
+        let toId = this.cdrToken.contract_id;
+        let amount = myAmount;
+
+        //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+        const transferURL = 'http://127.0.0.1:8080/api/transfer';
+        const data = { "fromId": fromId, "toId": toId, "amount": amount};
+        const response2 = await fetch(transferURL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        console.log("body parameter: ", JSON.stringify(data));
+        console.log("response to fund -> transfer(): ", response2);
 
     }
 

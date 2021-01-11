@@ -48,6 +48,7 @@ function createRandomUID(idLength) {
 let avgDailyCommuteKm = 31.84; // source: https://www.duurzame-mobiliteit.be/nieuws/ovg-55-aantal-verplaatsingen-en-kilometers-blijven-gelijk
 let lowBattery = 0.30; // EV requires charging below this remaining battery percentage
 let highBattery = 0.80; // EV charges until this battery percentage
+let initialFunding = 50.00; // EV Drivers receive this initial funding
 
 const myFleet = []; // array of EV's
 const myCPOs = []; // CPO's will onboard with our MSP
@@ -78,15 +79,15 @@ async function setup() {
 	myMSP = new MSP("TRES", 0.01); // specify name and fee
 	const mspCreatedOnLedger = await myMSP.createOnLedger();
 	myFI = new FI("KBC", 0.01); // specify name and fee
-	myFI.createOnLedger();
+	const fiCreatedOnLedger = await myFI.createOnLedger();
 	myTech = new TechAccount();
-	myTech.createOnLedger();
+	const techCreatedOnLedger = await myTech.createOnLedger();
 
 	nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
 	for (let i = 0; i < nLocations; i++) {
 		let newCPO = new CPO(i);
 		myCPOs.push(newCPO);
-		newCPO.createOnLedger();
+		const cpoCreatedOnLedger = await newCPO.createOnLedger();
 		// create new location
 		let newLocation = myLocations.addLocation(newCPO.getID());
 		// create chargepoints (EVSEs) in this new location (number according to distribution)
@@ -104,7 +105,8 @@ async function setup() {
 	for (let i = 0; i < evCount; i++) {
 		let newEV = new EV(i);
 		myFleet.push(newEV);
-		newEV.createOnLedger();
+		const evCreatedOnLedger = await newEV.createOnLedger();
+		const evFundedInitially = await newEV.fund(initialFunding);
 	}
 };
 
