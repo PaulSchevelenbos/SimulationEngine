@@ -83,6 +83,63 @@ class MSP {
         this.CDRqueue.push(myCDR);
     }
 
+    async processCDRqueue() {
+
+        if (this.CDRqueue.length > 0) {
+
+            let firstCDR = this.CDRqueue.shift();
+
+            let my_countryCode = firstCDR.country_code; // 0
+            let my_cpoContractId = firstCDR.party_id; // 1
+            let my_recordId = firstCDR.id; // 2
+            let my_startDateTime = firstCDR.start_date_time; // 3
+            let my_endDateTime = firstCDR.end_date_time; // 4
+            let my_sessionId = firstCDR.session_id; // 5
+            let my_cdrTokenUid = firstCDR.cdr_token.uid; // 6
+            let my_cdrTokenType = firstCDR.cdr_token.type; // 7
+            let my_evdrContractId = firstCDR.cdr_token.contract_id; // 8
+            let my_authMethod = firstCDR.auth_method; // 9
+            let my_authorizationReference = firstCDR.authorization_reference; // 10
+            let my_cdrLocation = firstCDR.cdr_location; // 11
+            let my_meterId = firstCDR.meter_id; // 12
+            let my_currency = firstCDR.currency; // 13
+            // let my_tariffs = firstCDR.tariffs;
+            // let my_charging_periods = firstCDR.charging_periods;
+            let my_signedData = firstCDR.signed_data; // 14
+            let my_totalCost = firstCDR.total_cost; // 15
+            let my_totalFixedCost = firstCDR.total_fixed_cost; // 16
+            let my_totalEnergy = firstCDR.total_energy; // 17
+            let my_totalEnergyCost = firstCDR.total_energy_cost; // 18
+            let my_totalTime = firstCDR.total_time; // 19
+            let my_totalTimeCost = firstCDR.total_time_cost; // 20
+            let my_totalParkingTime = firstCDR.total_parking_time; // 21
+            let my_totalParkingCost = firstCDR.total_parking_cost; // 22
+            let my_totalReservationCost = firstCDR.total_reservation_cost; // 23
+            let my_remark = firstCDR.remark; // 24
+            let my_invoiceReferenceId = firstCDR.invoice_reference_id; // 25
+            let my_credit = firstCDR.credit; // 26
+            let my_creditReferenceId = firstCDR.credit_reference_id; // 27
+            let my_lastUpdated = firstCDR.last_updated; // 28
+
+            //  curl --request POST --data '{"recordId":"1CB7D788881AFCE3DF7CEB3392B549310E5F","cpoContractId":"D12A7100","countryCode":"xxx","startDateTime":"xxx","endDateTime":"xxx","sessionId":"xxx","cdrTokenUid":"xxx","cdrTokenType":"xxx", "evdrContractId": "8256E4B0", "authMethod": "xxx", "authorizationReference": "xxx", "cdrLocation": "xxx", "meterId": "xxx", "currency": "xxx", "signedData": "xxx", "totalCost": "xxx", "totalFixedCost": "xxx", "totalEnergy": "xxx", "totalEnergyCost": "xxx", "totalTime": "xxx", "totalTimeCost": "xxx", "totalParkingTime": "xxx", "totalParkingCost": "xxx", "totalReservationCost": "xxx", "remark": "xxx", "invoiceReferenceId": "xxx", "credit": "xxx", "creditReferenceId": "xxx", "lastUpdated": "xxx"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/registerCDR
+            const registerCDRurl = 'http://127.0.0.1:8080/api/registerCDR';
+            const data = { "recordId": my_recordId, "cpoContractId": my_cpoContractId, "countryCode": my_countryCode, "startDateTime": my_startDateTime, "endDateTime": my_endDateTime, "sessionId": my_sessionId, "cdrTokenUid": my_cdrTokenUid, "cdrTokenType": my_cdrTokenType, "evdrContractId": my_evdrContractId, "authMethod": my_authMethod, "authorizationReference": my_authorizationReference, "cdrLocation": my_cdrLocation, "meterId": my_meterId, "currency": my_currency, "signedData": my_signedData, "totalCost": my_totalCost, "totalFixedCost": my_totalFixedCost, "totalEnergy": my_totalEnergy, "totalEnergyCost": my_totalEnergyCost, "totalTime": my_totalTime, "totalTimeCost": my_totalTimeCost, "totalParkingTime": my_totalParkingTime, "totalParkingCost": my_totalParkingCost, "totalReservationCost": my_totalReservationCost, "remark": my_remark, "invoiceReferenceId": my_invoiceReferenceId, "credit": my_credit, "creditReferenceId": my_creditReferenceId, "lastUpdated": my_lastUpdated };
+            const response = await fetch(registerCDRurl, {
+                method: 'POST',
+                mode: 'cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            console.log("body parameter: ", JSON.stringify(data));
+            console.log("response to createOnLedger -> fetch(): ", response);
+
+            return true;
+        }
+        return false;
+
+    }
+
+
     async createOnLedger() {
 
         let my_contract_id = this.ID;
@@ -103,9 +160,9 @@ class MSP {
         // const responseData = await response.json();
 
 
-       //  curl --request POST --data '{"contractId":"33B37086","uId":"CAD34E62D4505529A31659661BC133B37086","rol":"MSP", "walletBalance":"0","fees":"0.0"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createStakeholder
+        //  curl --request POST --data '{"contractId":"33B37086","uId":"CAD34E62D4505529A31659661BC133B37086","rol":"MSP", "walletBalance":"0","fees":"0.0"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/createStakeholder
         const createStakeholderURL = 'http://127.0.0.1:8080/api/createStakeholder';
-        const data = { "contractId": my_contract_id, "uId": my_uid, "rol": my_role, "walletBalance": my_wallet_balance, "fees": my_fee};
+        const data = { "contractId": my_contract_id, "uId": my_uid, "rol": my_role, "walletBalance": my_wallet_balance, "fees": my_fee };
         const response2 = await fetch(createStakeholderURL, {
             method: 'POST',
             mode: 'cors',
