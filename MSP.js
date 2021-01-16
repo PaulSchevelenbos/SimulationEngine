@@ -12,6 +12,7 @@ class MSP {
         this.totalCost = 0;
         this.nFinishedSessions = 0;
         this.CDRqueue = [];
+        this.nCDRsUnconfirmed = 0;
         this.fee = myFee; // in € per transaction (CDR)
     }
 
@@ -62,7 +63,9 @@ class MSP {
         text('totalCost: ' + this.totalCost.toFixed(2), 10, height - 20);
 
         textAlign(RIGHT);
-        text('CDRqueue.length: ' + this.CDRqueue.length, width - 5, height - 20);
+        text('CDRqueue.length: ' + this.CDRqueue.length, width - 5, height - 40);
+        text('nCDRsUnconfirmed: ' + this.nCDRsUnconfirmed, width - 5, height - 20);
+
         return;
     }
 
@@ -81,6 +84,7 @@ class MSP {
     addCDR(myCDR) {
         // add CDR to queue in order to send to the eMSP ledger
         this.CDRqueue.push(myCDR);
+        this.nCDRsUnconfirmed += 1;
     }
 
     async processCDRqueue() {
@@ -130,10 +134,12 @@ class MSP {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
-            console.log("body parameter: ", JSON.stringify(data));
-            console.log("response to createOnLedger -> fetch(): ", response);
-
-            return true;
+            if (response.ok) {
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to createOnLedger -> fetch(): ", response);
+                this.nCDRsUnconfirmed -= 1;
+                return true;
+            }
         }
         return false;
 
