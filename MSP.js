@@ -91,8 +91,10 @@ class MSP {
 
         if (this.CDRqueue.length > 0) {
 
+            // take the first CDR from the queue in memory
             let firstCDR = this.CDRqueue.shift();
 
+            // register this CDR on the ledger
             let my_countryCode = firstCDR.country_code; // 0
             let my_cpoContractId = firstCDR.party_id; // 1
             let my_recordId = firstCDR.id; // 2
@@ -135,10 +137,23 @@ class MSP {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
+                // if CDR is sucessfully registered on the ledger, execute settlementCDR
                 console.log("body parameter: ", JSON.stringify(data));
                 console.log("response to createOnLedger -> fetch(): ", response);
-                this.nCDRsUnconfirmed -= 1;
-                return true;
+
+                //  curl --request POST --data '{"recordId":"BA6F8D71399662794B8E80B0EAC82416E21F","contractIdFI":"7FAD7F72","contractIdEMSP":"785244A1"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/settlementCDR
+                const settlementCDRurl = 'http://127.0.0.1:8080/api/settlementCDR';
+                const data2 = { "recordId": my_recordId, "contractIdFI": myFI.ID, "contractIdEMSP": this.ID };
+                const response2 = await fetch(settlementCDRurl, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data2)
+                });
+                if (response2.ok) {
+                    this.nCDRsUnconfirmed -= 1;
+                    return true;
+                }
             }
         }
         return false;

@@ -17,8 +17,8 @@ const colorLocationField = [252, 159, 159, 150];
 
 
 // Simulation parameters
-let evCount = 10; // number of EV's
-let nLocations = 3; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let evCount = 5; // number of EV's
+let nLocations = 1; // number of locations with EVSEs, topped to myLocations.maxLocations()
 let evseDistribution = [10, 5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
@@ -54,6 +54,7 @@ const myFleet = []; // array of EV's
 const myCPOs = []; // CPO's will onboard with our MSP
 let myMSP; // Simulaton is set up for a single MSP
 let myFI; // Simulation assumes a financial institution accountable for tx's
+let myTech; // Tech account keeps track of created €-tokens
 
 
 // preparation before draw
@@ -66,7 +67,7 @@ async function setup() {
 	// time elements
 	speedSlider = createSlider(1, 60, 1, 1); // createSlider(min, max, [value], [step])
 	frameRate(simulationFrameRate);
-	simulationClock = new Clock(new Date(2021, 02, 01, 0, 30));
+	simulationClock = new Clock(new Date(2021, 02, 01, 9, 30));
 	startStopButton = createButton('START/STOP'); // to start/stop the simulation run 
 	startStopButton.mousePressed(startStopSimulation);
 
