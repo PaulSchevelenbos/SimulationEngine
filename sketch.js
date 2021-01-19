@@ -18,8 +18,8 @@ const colorLocationField = [252, 159, 159, 150];
 
 // Simulation parameters
 let evCount = 5; // number of EV's
-let nLocations = 1; // number of locations with EVSEs, topped to myLocations.maxLocations()
-let evseDistribution = [10, 5, 2, 1]; // maximum number of EVSEs per location
+let nLocations = 2; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let evseDistribution = [5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
 let maxSpeed = 5; // Maximum speed: 5 to 15
