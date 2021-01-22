@@ -12,9 +12,9 @@ class MSP {
         this.totalCost = 0;
         this.nFinishedSessions = 0;
         this.CDRqueue = [];
-        this.SettlementQueue = [];
+        // this.SettlementQueue = [];
         this.nCDRsUnconfirmed = 0;
-        this.nCDRsUnSettled = 0;
+        // this.nCDRsUnSettled = 0;
         this.fee = myFee; // in € per transaction (CDR)
     }
 
@@ -93,7 +93,7 @@ class MSP {
 
         if (this.CDRqueue.length > 0) {
 
-            // take the first CDR from the queue in memory
+            // take the first CDR from the queue in memory => queue shrinks by one element
             let firstCDR = this.CDRqueue.shift();
 
             // register this CDR on the ledger
@@ -143,6 +143,7 @@ class MSP {
             });
             if (response.ok) {
                 // if CDR is successfully registered and settled on the ledger
+                this.nCDRsUnconfirmed -= 1;
                 console.log("body parameter: ", JSON.stringify(data));
                 console.log("response to createOnLedger -> fetch(): ", response);
                 return true;

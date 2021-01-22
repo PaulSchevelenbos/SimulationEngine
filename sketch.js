@@ -18,7 +18,7 @@ const colorLocationField = [252, 159, 159, 150];
 
 // Simulation parameters
 let evCount = 5; // number of EV's
-let nLocations = 2; // number of locations with EVSEs, topped to myLocations.maxLocations()
+let nLocations = 1; // number of locations with EVSEs, topped to myLocations.maxLocations()
 let evseDistribution = [5, 2, 1]; // maximum number of EVSEs per location
 let objectSize; // size of EV's and CP's in pixels for display
 let speedSlider; // slider element in the DOM: minutes per frame (1 to 60)
@@ -62,7 +62,9 @@ async function setup() {
 
 	// createCanvas(windowWidth, windowHeight)
 	cityMap = loadImage('images/Medium-MapLeuven.jpg'); // TBC zoomed-out image when many EV's
-	createCanvas(787, 528);
+	var canvas = createCanvas(787, 528);
+	canvas.parent('jumbo-canvas');
+
 
 	// time elements
 	speedSlider = createSlider(1, 60, 1, 1); // createSlider(min, max, [value], [step])
