@@ -1,57 +1,169 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SimulationEngine (JS)</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<title>SimulationEngine (JS)</title>
-	<link rel="stylesheet" href="https: //stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="libraries/p5.js"></script>
+    <script src="libraries/p5.dom.js"></script>
+    <script src="libraries/p5.sound.js"></script>
+    <script src="sketch.js"></script>
+    <script src="CDR.js"></script>
+    <script src="CDRToken.js"></script>
+    <script src="Clock.js"></script>
+    <script src="CPO.js"></script>
+    <script src="EV.js"></script>
+    <script src="EVSE.js"></script>
+    <script src="Location.js"></script>
+    <script src="Locations.js"></script>
+    <script src="MSP.js"></script>
+    <script src="Session.js"></script>
+    <script src="TariffEngine.js"></script>
+    <script src="ChargingPeriod.js"></script>
+    <script src="FI.js"></script>
+    <script src="TechAccount.js"></script>
 
-	<script src="libraries/p5.js"></script>
-	<script src="libraries/p5.dom.js"></script>
-	<script src="libraries/p5.sound.js"></script>
-	<script src="sketch.js"></script>
-	<script src="CDR.js"></script>
-	<script src="CDRToken.js"></script>
-	<script src="Clock.js"></script>
-	<script src="CPO.js"></script>
-	<script src="EV.js"></script>
-	<script src="EVSE.js"></script>
-	<script src="Location.js"></script>
-	<script src="Locations.js"></script>
-	<script src="MSP.js"></script>
-	<script src="Session.js"></script>
-	<script src="TariffEngine.js"></script>
-	<script src="ChargingPeriod.js"></script>
-	<script src="FI.js"></script>
-	<script src="TechAccount.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-		}
-
-		canvas {
-			margin: auto;
-		}
-	</style>
+        canvas {
+            margin: auto;
+        }
+    </style>
 
 </head>
 
-<body>  
+<body>
+    <div class="jumbotron text-center">
+        <h1>Blockchain Project: SmartCity/EV Charging</h1>
+        <h4>Simulation of Electric Vehicle charging with Hyperledger Fabric</h4>
+        <p>Howest/Blockchain Developer & Architect (BDA@home) - Joeri Heyvaert & Paul Schevelenbos</p>
+    </div>
     <div class="container">
-        <div id="jumbo-canvas" class="jumbotron">
-            <h1>S3 Blockchain Project: SmartCity EV-Charging</h1>
-			<p class="lead">Simulation of Electric Vehicle charging with Hyperledger Fabric backend</p>
-			<p>Howest/Blockchain Developer & Architect (BDA@home) - Joeri Heyvaert & Paul Schevelenbos</p>
-            <hr />
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#setParams">Set Parameters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#runSimulation">Run Simulation</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#viewResults">View Results</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div id="setParams" class="container tab-pane active"><br>
+                <form action="/action_page.php">
+                    <div class="form-group">
+                        <label for="selectEVcount">Number of EV's:</label>
+                        <select class="form-control" id="selectEVcount" name="selectEVcount">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>50</option>
+                            <option>200</option>
+                            <option>500</option>
+                        </select>
+                        <br>
+                        <label for="selectLocations">Number of Locations:</label>
+                        <select class="form-control" id="selectLocations" name="selectLocations">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>5</option>
+                            <option>20</option>
+                            <option>50</option>
+                            <option>150</option>
+                        </select>
+                    </div>
+                    <label for="maxEVSEperLocation">Maximum number of EVSE per location:</label>
+                    <select class="form-control" id="maxEVSEperLocation" name="maxEVSEperLocation">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>5</option>
+                        <option>10</option>
+                    </select>
+                </form>
+
+                <form action="/action_page.php">
+                    <div class="form-check-inline">
+                        <label class="form-check-label" for="radio1">
+                            <input type="radio" class="form-check-input" id="radio1" name="optradio"
+                                value="WithoutHyperLedger" checked>Without Hyperledger
+                        </label>
+                    </div>
+                    <div class="form-check-inline">
+                        <label class="form-check-label" for="radio2">
+                            <input type="radio" class="form-check-input" id="radio2" name="optradio"
+                                value="WithHyperLedger">With HyperLedger
+                        </label>
+                    </div>
+                </form>
+
+                <br>
+                <button type="button" class="btn btn-primary" id="startSetup">Start Setup</button>
+
+            </div>
+
+
+            <div id="runSimulation" class="container tab-pane fade"><br>
+
+                <div id="jumbo-canvas" class="jumbotron">
+                </div>
+            </div>
+
+            <div id="viewResults" class="container tab-pane fade"><br>
+                <h3>View Results</h3>
+                <p>Queries and Refund come here</p>
+            </div>
+
         </div>
     </div>
+    </div>
+
+    <script>
+        // Pro memory: optradio=WithoutHyperLedger  or optradio=WithHyperLedger
+        $(document).ready(function () {
+            $(".nav-tabs a").click(function () {
+                $(this).tab('show');
+            });
+
+            $("#startSetup").click(function () {
+                $(this).button('toggle');
+                evCount = selectEVcount.value;
+                nLocations = selectLocations.value;
+                switch (maxEVSEperLocation.value) {
+                    case '1':
+                        evseDistribution = [1];
+                        break;
+                    case '2':
+                        evseDistribution = [2, 1];
+                        break;
+                    case '5':
+                        evseDistribution = [5, 2, 1];
+                        break;
+                    case '10':
+                        evseDistribution = [10, 5, 2, 1];
+                        break;
+                };
+                simulationParametersSet = true;
+                console.log("evCount, nLocations, evseDistribution: ", evCount, nLocations, evseDistribution);
+                setup();
+            });
+
+        });
+    </script>
 
 </body>
 
