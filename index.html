@@ -101,14 +101,14 @@
                     <p>Select simulation environment: </p>
                     <div class="form-check-inline">
                         <label class="form-check-label" for="radio1">
-                            <input type="radio" class="form-check-input" id="radioWithoutHyperledger" name="selectWithHyperledger"
-                                value= "false" checked> Without Hyperledger
+                            <input type="radio" class="form-check-input" id="radioWithoutHyperledger"
+                                name="selectWithHyperledger" value="false" checked> Without Hyperledger
                         </label>
                     </div>
                     <div class="form-check-inline">
                         <label class="form-check-label" for="radio2">
-                            <input type="radio" class="form-check-input" id="radioWithHyperledger" name="selectWithHyperledger"
-                                value= "true" > With HyperLedger
+                            <input type="radio" class="form-check-input" id="radioWithHyperledger"
+                                name="selectWithHyperledger" value="true"> With HyperLedger
                         </label>
                     </div>
                 </form>
@@ -119,20 +119,107 @@
             </div>
 
 
-            <div id="runSimulation" class="container tab-pane fade"><br>
-
+            <div id="runSimulation" class="container tab-pane fade">
                 <div id="jumbo-canvas" class="jumbotron">
                 </div>
             </div>
 
             <div id="viewResults" class="container tab-pane fade"><br>
-                <h3>View Results</h3>
-                <p>Queries and Refund come here</p>
+                <h4>Defunding</h4>
+                <br>
+                <div class="row">
+                    <div class="col-1 bg-info">EVDR</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-defund</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-primary" id="bt-defund-EVDR">Defund</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1 bg-info">CPO</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-defund</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-primary" id="bt-defund-EVDR">Defund</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1 bg-info">eMSP</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-defund</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-primary" id="bt-defund-EVDR">Defund</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1 bg-info">FI</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-defund</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-primary" id="bt-defund-EVDR">Defund</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1 bg-info">TECH</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-defund</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-primary" id="bt-defund-EVDR">Defund</button>
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <h4>Funding</h4>
+                <br>
+                <div class="row">
+                    <div class="col-1 bg-info">EVDR</div>
+                    <div class="col-3 bg-light">stakeholder</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-plafony</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-danger" id="bt-defund-EVDR">Replenish</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1 bg-info">ALL</div>
+                    <div class="col-3 bg-light">fleet</div>
+                    <div class="col ">
+                        <button type="button" class="btn btn-outline-primary" id="bt-query-EVDR">Query</button>
+                    </div>
+                    <div class="col-2 bg-light">€-tokens</div>
+                    <div class="col-2 bg-light">€-plafony</div>
+                    <div class="col">
+                        <button type="button" class="btn btn-outline-danger" id="bt-defund-EVDR">Replenish</button>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
- 
+
 
     <script>
         // Pro memory: optradio=WithoutHyperLedger  or optradio=WithHyperLedger
@@ -162,7 +249,7 @@
                 withHyperLedger = radioWithHyperledger.checked;
                 simulationParametersSet = true;
                 // console.log("evCount, nLocations, evseDistribution: ", evCount, nLocations, evseDistribution);
-                console.log ("radioWithHyperledger.checked: ", radioWithHyperledger.checked);
+                console.log("radioWithHyperledger.checked: ", radioWithHyperledger.checked);
                 setup();
             });
 
