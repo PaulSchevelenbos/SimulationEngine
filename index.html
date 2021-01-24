@@ -97,16 +97,18 @@
                 </form>
 
                 <form action="/action_page.php">
+                    <hr>
+                    <p>Select simulation environment: </p>
                     <div class="form-check-inline">
                         <label class="form-check-label" for="radio1">
-                            <input type="radio" class="form-check-input" id="radio1" name="optradio"
-                                value="WithoutHyperLedger" checked>Without Hyperledger
+                            <input type="radio" class="form-check-input" id="radioWithoutHyperledger" name="selectWithHyperledger"
+                                value= "false" checked> Without Hyperledger
                         </label>
                     </div>
                     <div class="form-check-inline">
                         <label class="form-check-label" for="radio2">
-                            <input type="radio" class="form-check-input" id="radio2" name="optradio"
-                                value="WithHyperLedger">With HyperLedger
+                            <input type="radio" class="form-check-input" id="radioWithHyperledger" name="selectWithHyperledger"
+                                value= "true" > With HyperLedger
                         </label>
                     </div>
                 </form>
@@ -130,7 +132,7 @@
 
         </div>
     </div>
-    </div>
+ 
 
     <script>
         // Pro memory: optradio=WithoutHyperLedger  or optradio=WithHyperLedger
@@ -157,8 +159,10 @@
                         evseDistribution = [10, 5, 2, 1];
                         break;
                 };
+                withHyperLedger = radioWithHyperledger.checked;
                 simulationParametersSet = true;
-                console.log("evCount, nLocations, evseDistribution: ", evCount, nLocations, evseDistribution);
+                // console.log("evCount, nLocations, evseDistribution: ", evCount, nLocations, evseDistribution);
+                console.log ("radioWithHyperledger.checked: ", radioWithHyperledger.checked);
                 setup();
             });
 

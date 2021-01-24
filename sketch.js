@@ -27,11 +27,11 @@ let maxForce = 2.0; // Maximum steering force: 2.0 to 4.0
 let simulationFrameRate = 60; // 60 frames per second (every frame is from 1 minute up to 60 minutes)
 let simulationClock; // keeps track of (accellerated) time progression
 let startStopButton; // alternates between start/resume or stop 
-// let resetButton; // resets the currentTime to startTime
 let simulationRunning = false; // function draw() only executes when 'true'
 let simulationParametersSet = false; // function setup() only executes when 'true'
 let myLocations; // territory split in locations like a chessfield
 let myResolution; // pixel length of one matrix square dividing the map in locations
+let withHyperLedger = false; // simulation can run without Hyperledger (supressing API Calls)
 
 
 // Utility functions
@@ -84,17 +84,25 @@ async function setup() {
 
 		// create stakeholders, Locations and chargepoints
 		myMSP = new MSP("TRES", 0.01); // specify name and fee
-		const mspCreatedOnLedger = await myMSP.createOnLedger();
+		if (withHyperLedger) {
+			const mspCreatedOnLedger = await myMSP.createOnLedger();
+		}
 		myFI = new FI("KBC", 0.01); // specify name and fee
-		const fiCreatedOnLedger = await myFI.createOnLedger();
+		if (withHyperLedger) {
+			const fiCreatedOnLedger = await myFI.createOnLedger();
+		}
 		myTech = new TechAccount();
-		const techCreatedOnLedger = await myTech.createOnLedger();
+		if (withHyperLedger) {
+			const techCreatedOnLedger = await myTech.createOnLedger();
+		}
 
 		nLocations = Math.min(nLocations, myLocations.maxLocations()); // no more than grid allows
 		for (let i = 0; i < nLocations; i++) {
 			let newCPO = new CPO(i);
 			myCPOs.push(newCPO);
-			const cpoCreatedOnLedger = await newCPO.createOnLedger();
+			if (withHyperLedger) {
+				const cpoCreatedOnLedger = await newCPO.createOnLedger();
+			}
 			// create new location
 			let newLocation = myLocations.addLocation(newCPO.getID());
 			// create chargepoints (EVSEs) in this new location (number according to distribution)
@@ -112,8 +120,10 @@ async function setup() {
 		for (let i = 0; i < evCount; i++) {
 			let newEV = new EV(i);
 			myFleet.push(newEV);
-			const evCreatedOnLedger = await newEV.createOnLedger();
-			const evFundedInitially = await newEV.fund(initialFunding);
+			if (withHyperLedger) {
+				const evCreatedOnLedger = await newEV.createOnLedger();
+				const evFundedInitially = await newEV.fund(initialFunding);
+			}
 		}
 	}
 };
@@ -134,7 +144,9 @@ function draw() {
 		// animate EV Simulation
 		myMSP.showLocations();
 		myMSP.showStatistics();
-		myMSP.processCDRqueue();
+		if (withHyperLedger) {
+			myMSP.processCDRqueue();
+		}
 
 		for (let chargePoint of myMSP.chargePoints) {
 			chargePoint.operate();

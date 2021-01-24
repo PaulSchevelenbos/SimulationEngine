@@ -112,8 +112,12 @@ class EV {
                 // move to reservedChargePoint
                 this.color = (this.reservedChargePoint.isMyTurn(this.ID)) ? colorHeading : colorQueueing;
                 this.arriveAtTarget(this.reservedChargePoint);
-            } else if (!this.reservedChargePoint.isMyTurn(this.ID)) {
+            } else if (
+                (!this.reservedChargePoint.isMyTurn(this.ID)) ||
+                (withHyperLedger && (myMSP.nCDRsUnconfirmed > 0))) {
                 // do nothing, keep queueing around chargepoint
+                // latter condition is a workaround to circumvent slowlyness of Hyperledger:
+                // only create new CDR if preceeding CDRs are confirmed
 
             } else if (!this.startedCharging) {
                 // jump on chargepoint and charge energy
@@ -278,7 +282,7 @@ class EV {
 
         //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
         const transferURL = 'http://127.0.0.1:8080/api/transfer';
-        const data = { "fromId": fromId, "toId": toId, "amount": amount};
+        const data = { "fromId": fromId, "toId": toId, "amount": amount };
         const response2 = await fetch(transferURL, {
             method: 'POST',
             mode: 'cors',
