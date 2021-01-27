@@ -180,6 +180,23 @@ async function setup() {
 
 function startStopSimulation() {
 	simulationRunning = !simulationRunning;
+};
+
+async function getWallet(someStakeholderID, someContractID) {
+	// get wallet balance from the ledger 
+	// curl http://127.0.0.1:8080/api/getBalance/Stakeholder_id/Contract_id 
+	// curl http://127.0.0.1:8080/api/getBalance/4B430DE1/4B430DE1 
+	const getWalletURL = 'http://127.0.0.1:8080/api/getBalance'
+		+ '/' + String(someStakeholderID)
+		+ '/' + String(someContractID);
+	const response = await fetch(getWalletURL, {
+		method: 'GET',
+		mode: 'cors',
+		headers: { 'Content-Type': 'application/json' },
+	});
+	const walletBalance = await response.json();
+	console.log("response to getWallet(): ", walletBalance.response);
+	return walletBalance.response;
 }
 
 // draw per frame, using P5 library 
