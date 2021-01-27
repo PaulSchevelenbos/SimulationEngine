@@ -125,6 +125,56 @@ async function setup() {
 				const evFundedInitially = await newEV.fund(initialFunding);
 			}
 		}
+
+		// populate the selectEVDR pull-down list
+		for (let i = 0; i < myFleet.length; i++) {
+			let optn = myFleet[i].cdrToken.contract_id;
+			let el = document.createElement("option");
+			let el2 = document.createElement("option");
+			el.textContent = optn;
+			el.value = optn;
+			el2.textContent = optn;
+			el2.value = optn;
+			selectEVDR.appendChild(el);
+			selectEVDR2.appendChild(el2);
+		}
+
+		// populate the selectCPO pull-down list
+		for (let i = 0; i < myCPOs.length; i++) {
+			let optn = myCPOs[i].id;
+			let el = document.createElement("option");
+			el.textContent = optn;
+			el.value = optn;
+			selectCPO.appendChild(el);
+		}
+
+		// populate the selectEMSP pull-down list
+		{
+			let optn = myMSP.ID;
+			let el = document.createElement("option");
+			el.textContent = optn;
+			el.value = optn;
+			selectEMSP.appendChild(el);
+		}
+
+		// populate the selectFI pull-down list
+		{
+			let optn = myFI.ID;
+			let el = document.createElement("option");
+			el.textContent = optn;
+			el.value = optn;
+			selectFI.appendChild(el);
+		}
+
+		// populate the selectTECH pull-down list
+		{
+			let optn = myTech.ID;
+			let el = document.createElement("option");
+			el.textContent = optn;
+			el.value = optn;
+			selectTECH.appendChild(el);
+		}
+
 	}
 };
 
