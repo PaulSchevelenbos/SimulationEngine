@@ -147,7 +147,7 @@
 
                     <div class="col ">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-defund">
+                            <input id="EVDR-defund-tokens" type="text" class="form-control" placeholder="€-defund">
                             <div class="input-group-append">
                                 <button id="bt-defund-EVDR" class="btn btn-success" type="submit">Defund</button>
                             </div>
@@ -177,7 +177,7 @@
 
                     <div class="col ">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-defund">
+                            <input id="CPO-defund-tokens" type="text" class="form-control" placeholder="€-defund">
                             <div class="input-group-append">
                                 <button id="bt-defund-CPO" class="btn btn-success" type="submit">Defund</button>
                             </div>
@@ -205,7 +205,7 @@
 
                     <div class="col ">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-defund">
+                            <input id="EMSP-defund-tokens" type="text" class="form-control" placeholder="€-defund">
                             <div class="input-group-append">
                                 <button id="bt-defund-EMSP" class="btn btn-success" type="submit">Defund</button>
                             </div>
@@ -233,7 +233,7 @@
 
                     <div class="col ">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-defund">
+                            <input id="FI-defund-tokens" type="text" class="form-control" placeholder="€-defund">
                             <div class="input-group-append">
                                 <button id="bt-defund-FI" class="btn btn-success" type="submit">Defund</button>
                             </div>
@@ -261,12 +261,6 @@
                     </div>
 
                     <div class="col ">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-defund">
-                            <div class="input-group-append">
-                                <button id="bt-defund-TECH" class="btn btn-success" type="submit">Defund</button>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
@@ -295,33 +289,9 @@
 
                     <div class="col ">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-fund">
+                            <input id="evdr-fund-tokens" type="text" class="form-control" placeholder="€-fund">
                             <div class="input-group-append">
                                 <button id="bt-fund-EVDR" class="btn btn-danger" type="submit">Fund</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-1 bg-info">ALL</div>
-                    <div class="col-3 bg-light">fleet</div>
-
-                    <div class="col ">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <button id="bt-query-ALL" class="btn btn-outline-primary" type="button">Query</button>
-                            </div>
-                            <input id="evdr-euro-ALL" type="text" class="form-control" placeholder="€-tokens">
-                        </div>
-                    </div>
-
-                    <div class="col ">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="€-fund">
-                            <div class="input-group-append">
-                                <button id="bt-fund-ALL" class="btn btn-danger" type="submit">Fund</button>
                             </div>
                         </div>
                     </div>
@@ -405,6 +375,105 @@
                 const myBalance = await getWallet(myTECH, myTECH);
                 document.getElementById("TECH-euro-tokens").value = String(myBalance);
                 console.log("TECH-euro-tokens: ", myBalance);
+            })
+
+            $("#bt-query-EVDR2").click(async function () {
+                const myEVDR2 = selectEVDR2.value;
+                const myBalance = await getWallet(myEVDR2, myEVDR2);
+                document.getElementById("evdr-euro-tokens2").value = String(myBalance);
+                console.log("evdr-euro-tokens2: ", myBalance);
+            })
+
+            $("#bt-fund-EVDR").click(async function () {
+                let fromId = myTech.ID;
+                let toId = selectEVDR2.value;
+                let amount = document.getElementById("evdr-fund-tokens").value
+
+                //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+                const transferURL = 'http://127.0.0.1:8080/api/transfer';
+                const data = { "fromId": fromId, "toId": toId, "amount": amount };
+                const response2 = await fetch(transferURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to fund -> transfer(): ", response2);
+
+            })
+
+            $("#bt-defund-EVDR").click(async function () {
+                let fromId = selectEVDR.value;
+                let toId = myTech.ID;
+                let amount = document.getElementById("EVDR-defund-tokens").value
+
+                //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+                const transferURL = 'http://127.0.0.1:8080/api/transfer';
+                const data = { "fromId": fromId, "toId": toId, "amount": amount };
+                const response2 = await fetch(transferURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to fund -> transfer(): ", response2);
+
+            })
+
+            $("#bt-defund-CPO").click(async function () {
+                let fromId = selectCPO.value;
+                let toId = myTech.ID;
+                let amount = document.getElementById("CPO-defund-tokens").value
+
+                //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+                const transferURL = 'http://127.0.0.1:8080/api/transfer';
+                const data = { "fromId": fromId, "toId": toId, "amount": amount };
+                const response2 = await fetch(transferURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to fund -> transfer(): ", response2);
+            })
+
+            $("#bt-defund-EMSP").click(async function () {
+                let fromId = selectEMSP.value;
+                let toId = myTech.ID;
+                let amount = document.getElementById("EMSP-defund-tokens").value
+
+                //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+                const transferURL = 'http://127.0.0.1:8080/api/transfer';
+                const data = { "fromId": fromId, "toId": toId, "amount": amount };
+                const response2 = await fetch(transferURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to fund -> transfer(): ", response2);
+            })
+
+            $("#bt-defund-FI").click(async function () {
+                let fromId = selectFI.value;
+                let toId = myTech.ID;
+                let amount = document.getElementById("FI-defund-tokens").value
+
+                //  curl --request POST --data '{"fromId":"C66F54D1","toId":"9C13E444","amount":"50.00"}' -H "Content-Type: application/json"  http://127.0.0.1:8080/api/transfer
+                const transferURL = 'http://127.0.0.1:8080/api/transfer';
+                const data = { "fromId": fromId, "toId": toId, "amount": amount };
+                const response2 = await fetch(transferURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                console.log("body parameter: ", JSON.stringify(data));
+                console.log("response to fund -> transfer(): ", response2);
             })
 
         });
